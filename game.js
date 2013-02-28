@@ -1,17 +1,10 @@
 (function($) {
 	$.fn.game = function(options) {
-		var CANVAS_HEIGHT = 400;
-		var CANVAS_WIDTH = 420;
-		var textx = 50, texty = 50;
-		var inverse = 1;
-		var margin = 50;
+		var canvasElement = $(this);
+		var CANVAS_HEIGHT = canvasElement.height();
+		var CANVAS_WIDTH = canvasElement.width();
 		var timeOut;
-
-		var canvasElement = $("<canvas id='game' width='" + CANVAS_WIDTH + "' height='" + CANVAS_HEIGHT + "'></canvas>");
-
 		var canvas = canvasElement.get(0).getContext("2d");
-		canvasElement.appendTo('body');
-
 		var FPS = 30;
 
 		function start() {

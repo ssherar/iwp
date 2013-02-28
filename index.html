@@ -6,7 +6,8 @@
 		<link rel="stylesheet" href="style.css" />
 		<script type="text/javascript">
 			$(function() {
-				$("#game").run();	
+				$("#game").run();
+				$("#hud").createHUD();
 			});
 		</script>
 
@@ -14,6 +15,9 @@
 
 	<body>
 		<canvas id="game" height="400" width="420"></canvas>
+		<section id="hud">
+			<button type="button" id="stop" value="stop">Stop</button>
+		</section>
 	</body>
 
 </html>

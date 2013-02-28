@@ -1,15 +1,19 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut;
-	game = function(canvasArea) {
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null;
+	gameMechanics = function(canvasArea) {
 		canvasElement = canvasArea;
 		CANVAS_HEIGHT = canvasElement.height();
 		CANVAS_WIDTH = canvasElement.width();
 		canvas = canvasElement.get(0).getContext("2d");
-		function start() {
+		this.start = function() {
 			timeOut = setInterval(function() {
 				update();
 				draw();
 			}, 1000/FPS);
+		}
+
+		this.stop = function() {
+			clearInterval(timeOut);
 		}
 
 
@@ -56,8 +60,6 @@
 				pressed_keys.remove(event.which);
 			}
 		});
-
-		start();
 	}
 
 	var player = {
@@ -97,7 +99,25 @@
 		return this;
 	}
 
+
+
 	$.fn.run = function() {
-		game($(this));
+		game = new gameMechanics($(this));
+		game.start();
+
+	}
+
+	$.fn.createHUD = function() {
+		$('#stop').click(function() {
+			if(game == null) return;
+			if(timeOut != null) {
+				game.stop();
+				$('#stop').value = "Start";
+				timeOut = null;
+			} else {
+			       game.start();
+			}	       
+		});
+
 	}
 })(jQuery);

@@ -11,7 +11,7 @@ $(function() {
 	var canvas = canvasElement.get(0).getContext("2d");
 	canvasElement.appendTo('body');
 
-	var FPS = 100;
+	var FPS = 30;
 
 	function start() {
 		timeOut = setInterval(function() {
@@ -23,6 +23,25 @@ $(function() {
 
 	function update() {
 		canvas.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+		for(i = 0; i < pressed_keys.length; i++) {
+			switch(pressed_keys[i]) {
+				case 37:
+					player.moveLeft();
+					break;
+				case 39:
+					player.moveRight();
+					break;
+				case 38:
+					player.moveUp();
+					break;
+				case 40:
+					player.moveDown();
+					break;
+				case 32:
+					player.fire();
+					break;
+			}
+		}
 	}
 
 	function draw() {

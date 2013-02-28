@@ -1,6 +1,7 @@
 (function($) {
 	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null;
 	gameMechanics = function(canvasArea) {
+		var self = this;
 		canvasElement = canvasArea;
 		CANVAS_HEIGHT = canvasElement.height();
 		CANVAS_WIDTH = canvasElement.width();
@@ -14,6 +15,13 @@
 
 		this.stop = function() {
 			clearInterval(timeOut);
+			self.drawPause();
+			timeOut = null;
+		}
+
+		this.drawPause = function() {
+			canvas.fillStyle = "rgba(0,0,0,0.5)";
+			canvas.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		}
 
 
@@ -58,6 +66,16 @@
 		$(window).keyup(function(event) {
 			if($.inArray(event.which, pressed_keys) > -1) {
 				pressed_keys.remove(event.which);
+			}
+		});
+
+		$(window).keypress(function(event) {
+			switch(event.which) {
+				case 112:
+					if(timeOut != null) {
+						self.stop();
+					} else self.start();
+					break;
 			}
 		});
 	}
@@ -112,8 +130,6 @@
 			if(game == null) return;
 			if(timeOut != null) {
 				game.stop();
-				$('#stop').value = "Start";
-				timeOut = null;
 			} else {
 			       game.start();
 			}	       

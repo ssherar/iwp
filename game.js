@@ -1,6 +1,6 @@
 (function($) {
-	$.fn.game = function(options) {
-		var canvasElement = $(this);
+	game = function(canvasArea) {
+		var canvasElement = canvasArea;
 		var CANVAS_HEIGHT = canvasElement.height();
 		var CANVAS_WIDTH = canvasElement.width();
 		var timeOut;
@@ -41,8 +41,6 @@
 		function draw() {
 			player.draw();
 		}
-
-		start();
 
 		var player = {
 			color: "#00A",
@@ -97,5 +95,11 @@
 			}
 			return this;
 		}
+
+		start();
+	}
+
+	$.fn.run = function() {
+		game($(this));
 	}
 })(jQuery);

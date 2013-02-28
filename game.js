@@ -1,12 +1,10 @@
 (function($) {
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut;
 	game = function(canvasArea) {
-		var canvasElement = canvasArea;
-		var CANVAS_HEIGHT = canvasElement.height();
-		var CANVAS_WIDTH = canvasElement.width();
-		var timeOut;
-		var canvas = canvasElement.get(0).getContext("2d");
-		var FPS = 30;
-
+		canvasElement = canvasArea;
+		CANVAS_HEIGHT = canvasElement.height();
+		CANVAS_WIDTH = canvasElement.width();
+		canvas = canvasElement.get(0).getContext("2d");
 		function start() {
 			timeOut = setInterval(function() {
 				update();
@@ -42,31 +40,6 @@
 			player.draw();
 		}
 
-		var player = {
-			color: "#00A",
-			 x: 270,
-			 y: 270,
-			 width:32,
-			 height:32,
-			 draw: function() {
-				 canvas.fillStyle = this.color;
-				 canvas.fillRect(this.x, this.y, this.width, this.height);
-			 },
-			 moveLeft: function() {
-				 this.x = clamp(this.x - 10, 0, CANVAS_WIDTH);
-			 },
-			 moveRight: function() {
-				 this.x = clamp(this.x + 10, 0, CANVAS_WIDTH - this.width);
-			 },
-			 moveUp: function() {
-				this.y = clamp(this.y - 10, 0, CANVAS_HEIGHT);	 
-			 }, moveDown: function() {
-				 this.y = clamp(this.y + 10, 0, CANVAS_HEIGHT - this.height);
-			 }, fire: function() {
-				 console.log("PEW PEW MOTHERFUCKER!");
-			 }
-		};
-
 		var pressed_keys = [];
 		var valid_keys = [32, 37, 38, 39, 40];
 
@@ -84,19 +57,44 @@
 			}
 		});
 
-		var clamp = function(x, min, max) {
-			return (x < min ? min : (x > max ? max : x ));
-		}
-
-		Array.prototype.remove = function(ele) {
-			var where;
-			if((where = this.indexOf(ele)) > -1) {
-				this.splice(where, 1);
-			}
-			return this;
-		}
-
 		start();
+	}
+
+	var player = {
+		color: "#00A",
+		 x: 270,
+		 y: 270,
+		 width:32,
+		 height:32,
+		 draw: function() {
+			 canvas.fillStyle = this.color;
+			 canvas.fillRect(this.x, this.y, this.width, this.height);
+		 },
+		 moveLeft: function() {
+			 this.x = (this.x - 10).clamp(0, CANVAS_WIDTH);
+		 },
+		 moveRight: function() {
+			 this.x = (this.x + 10).clamp(0, CANVAS_WIDTH - this.width);
+		 },
+		 moveUp: function() {
+			this.y = (this.y - 10).clamp(0, CANVAS_HEIGHT);	 
+		 }, moveDown: function() {
+			 this.y = (this.y + 10).clamp(0, CANVAS_HEIGHT - this.height);
+		 }, fire: function() {
+			 console.log("PEW PEW MOTHERFUCKER!");
+		 }
+	};
+
+	Number.prototype.clamp = function(min, max) {
+		return (this < min ? min : (this > max ? max : this ));
+	}
+
+	Array.prototype.remove = function(ele) {
+		var where;
+		if((where = this.indexOf(ele)) > -1) {
+			this.splice(where, 1);
+		}
+		return this;
 	}
 
 	$.fn.run = function() {

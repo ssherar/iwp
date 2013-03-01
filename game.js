@@ -1,5 +1,5 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null;
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null, player;
 	gameMechanics = function(canvasArea) {
 		var self = this;
 		canvasElement = canvasArea;
@@ -28,24 +28,9 @@
 		function update() {
 			canvas.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
 			for(i = 0; i < pressed_keys.length; i++) {
-				switch(pressed_keys[i]) {
-					case 37:
-						player.moveLeft();
-						break;
-					case 39:
-						player.moveRight();
-						break;
-					case 38:
-						player.moveUp();
-						break;
-					case 40:
-						player.moveDown();
-						break;
-					case 32:
-						player.fire();
-						break;
-				}
+				valid_keys[pressed_keys[i]].call();
 			}
+			
 		}
 
 		function draw() {
@@ -53,10 +38,16 @@
 		}
 
 		var pressed_keys = [];
-		var valid_keys = [32, 37, 38, 39, 40];
+		var valid_keys = {
+			32 : player.fire, 
+			37 : player.moveLeft, 
+			38 : player.moveUp, 
+			39 : player.moveRight, 
+			40 : player.moveDown
+		};
 
 		$(window).keydown(function(event) {
-			if($.inArray(event.which, valid_keys) > -1) {
+			if(event.which in valid_keys) {
 				if($.inArray(event.which, pressed_keys) == -1) {
 					pressed_keys.push(event.which);
 				}
@@ -80,7 +71,8 @@
 		});
 	}
 
-	var player = {
+	player = {
+		
 		color: "#00A",
 		 x: 270,
 		 y: 270,
@@ -91,15 +83,15 @@
 			 canvas.fillRect(this.x, this.y, this.width, this.height);
 		 },
 		 moveLeft: function() {
-			 this.x = (this.x - 10).clamp(0, CANVAS_WIDTH);
+			 player.x = (player.x - 10).clamp(0, CANVAS_WIDTH);
 		 },
 		 moveRight: function() {
-			 this.x = (this.x + 10).clamp(0, CANVAS_WIDTH - this.width);
+			 player.x = (player.x + 10).clamp(0, CANVAS_WIDTH - player.width);
 		 },
 		 moveUp: function() {
-			this.y = (this.y - 10).clamp(0, CANVAS_HEIGHT);	 
+			player.y = (player.y - 10).clamp(0, CANVAS_HEIGHT);	 
 		 }, moveDown: function() {
-			 this.y = (this.y + 10).clamp(0, CANVAS_HEIGHT - this.height);
+			 player.y = (player.y + 10).clamp(0, CANVAS_HEIGHT - player.height);
 		 }, fire: function() {
 			 console.log("PEW PEW MOTHERFUCKER!");
 		 }

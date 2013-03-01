@@ -1,5 +1,5 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null, bullet, bullets = [];
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 60, timeOut, game = null, bullet, bullets = [];
 	gameMechanics = function(canvasArea) {
 		var self = this;
 		canvasElement = canvasArea;
@@ -36,7 +36,6 @@
 					bullets.remove(bullet);
 				}
 			});
-			console.log(bullets.length);	
 		}
 
 		function draw() {
@@ -92,15 +91,15 @@
 			 canvas.fillRect(this.x, this.y, this.width, this.height);
 		 },
 		 moveLeft: function() {
-			 player.x = (player.x - 10).clamp(0, CANVAS_WIDTH);
+			 player.x = (player.x - 5).clamp(0, CANVAS_WIDTH);
 		 },
 		 moveRight: function() {
-			 player.x = (player.x + 10).clamp(0, CANVAS_WIDTH - player.width);
+			 player.x = (player.x + 5).clamp(0, CANVAS_WIDTH - player.width);
 		 },
 		 moveUp: function() {
-			player.y = (player.y - 10).clamp(0, CANVAS_HEIGHT);	 
+			player.y = (player.y - 5).clamp(0, CANVAS_HEIGHT);	 
 		 }, moveDown: function() {
-			 player.y = (player.y + 10).clamp(0, CANVAS_HEIGHT - player.height);
+			 player.y = (player.y + 5).clamp(0, CANVAS_HEIGHT - player.height);
 		 }, fire: function() {
 		   	pos = player.midpoint();
 			 var tmpBullet = new bullet(
@@ -119,7 +118,7 @@
 		b.color = "#000";
 		b.width = 3;
 		b.height = 3;
-		b.speed = -3;
+		b.speed = -6;
 		b.draw = function() {
 		 	canvas.fillStyle = this.color;
 			canvas.fillRect(this.x, this.y, this.width, this.height);

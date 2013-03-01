@@ -1,5 +1,5 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null, player;
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 30, timeOut, game = null, bullet, bullets = [];
 	gameMechanics = function(canvasArea) {
 		var self = this;
 		canvasElement = canvasArea;
@@ -30,11 +30,20 @@
 			for(i = 0; i < pressed_keys.length; i++) {
 				valid_keys[pressed_keys[i]].call();
 			}
-			
+			bullets.forEach(function(bullet) {
+			  	bullet.update();
+				if(!bullet.active) {
+					bullets.remove(bullet);
+				}
+			});
+			console.log(bullets.length);	
 		}
 
 		function draw() {
 			player.draw();
+			bullets.forEach(function(bullet) {
+			  bullet.draw();
+			});
 		}
 
 		var pressed_keys = [];
@@ -93,23 +102,38 @@
 		 }, moveDown: function() {
 			 player.y = (player.y + 10).clamp(0, CANVAS_HEIGHT - player.height);
 		 }, fire: function() {
-			 console.log("PEW PEW MOTHERFUCKER!");
+		   	pos = player.midpoint();
+			 var tmpBullet = new bullet(
+			 	{x: pos.x, y: pos.y}
+			     );
+			 bullets.push(tmpBullet);
+
+		 },
+		 midpoint: function() {
+			return {x: player.x + player.width/2, y: player.y};
 		 }
 	};
 
-	Number.prototype.clamp = function(min, max) {
-		return (this < min ? min : (this > max ? max : this ));
-	}
-
-	Array.prototype.remove = function(ele) {
-		var where;
-		if((where = this.indexOf(ele)) > -1) {
-			this.splice(where, 1);
+	bullet = function(b) {
+	  	b.active = true;
+		b.color = "#000";
+		b.width = 3;
+		b.height = 3;
+		b.speed = -3;
+		b.draw = function() {
+		 	canvas.fillStyle = this.color;
+			canvas.fillRect(this.x, this.y, this.width, this.height);
 		}
-		return this;
-	}
+		b.update = function() {
+		  	this.y += this.speed;
+			this.inBounds();
+		}
 
-
+		b.inBounds = function() {
+			this.active = (this.y > 0);
+		}
+		return b;
+	};
 
 	$.fn.run = function() {
 		game = new gameMechanics($(this));

@@ -6,7 +6,6 @@
 		CANVAS_HEIGHT = canvasElement.height();
 		CANVAS_WIDTH = canvasElement.width();
 		canvas = canvasElement.get(0).getContext("2d");
-		enemies.push(new enemy());
 
 		this.start = function() {
 			timeOut = setInterval(function() {
@@ -45,6 +44,10 @@
 					enemies.remove(enemy);
 				}
 			});
+			if(Math.random() < 0.05) {
+				enemies.push(new enemy());
+			}
+
 		}
 
 		function draw() {
@@ -141,11 +144,13 @@
 		 }, moveDown: function() {
 			 player.y = (player.y + 5).clamp(0, CANVAS_HEIGHT - player.height);
 		 }, fire: function() {
-		   	pos = player.midpoint();
-			 var tmpBullet = new bullet(
-			 	{x: pos.x, y: pos.y}
-			     );
-			 bullets.push(tmpBullet);
+			 if(bullets.length < 30) {
+				pos = player.midpoint();
+				var tmpBullet = new bullet(
+					{x: pos.x, y: pos.y}
+				);
+				bullets.push(tmpBullet);
+			 }
 
 		 },
 		 midpoint: function() {

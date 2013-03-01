@@ -29,6 +29,7 @@
 
 		function update() {
 			canvas.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+			checkCollisions();
 			for(i = 0; i < pressed_keys.length; i++) {
 				valid_keys[pressed_keys[i]].call();
 			}
@@ -88,6 +89,34 @@
 					break;
 			}
 		});
+	}
+
+	checkCollisions = function() {
+		enemies.forEach(function(enemy) {
+			var hit = false;
+			bullets.forEach(function(bullet) {
+				if(collided(enemy, bullet)) {
+					bullets.remove(bullet);
+					hit = true
+					return;
+				}
+			});
+
+			if(collided(enemy, player)) {
+				//TODO loose a life
+				hit = true;
+			}
+
+			if(hit) enemies.remove(enemy);
+		});
+
+	}
+
+	collided = function(enemy, object) {
+		return (enemy.x < (object.x + object.width))
+			&& ((enemy.x + enemy.width) > object.x)
+			&& (enemy.y < (object.y + object.height))
+			&& ((enemy.y + enemy.height) > object.y);
 	}
 
 	player = {

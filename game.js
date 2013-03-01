@@ -1,11 +1,13 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 60, timeOut, game = null, bullet, bullets = [];
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 60, timeOut, enemies = [], game = null, bullet, bullets = [];
 	gameMechanics = function(canvasArea) {
 		var self = this;
 		canvasElement = canvasArea;
 		CANVAS_HEIGHT = canvasElement.height();
 		CANVAS_WIDTH = canvasElement.width();
 		canvas = canvasElement.get(0).getContext("2d");
+		enemies.push(new enemy({x:200, y: 0}));
+
 		this.start = function() {
 			timeOut = setInterval(function() {
 				update();
@@ -41,7 +43,10 @@
 		function draw() {
 			player.draw();
 			bullets.forEach(function(bullet) {
-			  bullet.draw();
+			 	 bullet.draw();
+			});
+			enemies.forEach(function(enemy) {
+			  	enemy.draw();
 			});
 		}
 
@@ -133,6 +138,21 @@
 		}
 		return b;
 	};
+
+	enemy = function(e) {
+	  	e = e || {};
+	  	e.active = true;
+		e.color = "#F00";
+		e.width = 12;
+		e.height = 12;
+
+		e.draw = function() {
+		  	canvas.fillStyle = this.color;
+			canvas.fillRect(this.x, this.y, this.width, this.height);
+		}
+
+		return e;
+	}
 
 	$.fn.run = function() {
 		game = new gameMechanics($(this));

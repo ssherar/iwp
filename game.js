@@ -6,7 +6,7 @@
 		CANVAS_HEIGHT = canvasElement.height();
 		CANVAS_WIDTH = canvasElement.width();
 		canvas = canvasElement.get(0).getContext("2d");
-		enemies.push(new enemy({x:200, y: 0}));
+		enemies.push(new enemy());
 
 		this.start = function() {
 			timeOut = setInterval(function() {
@@ -36,6 +36,12 @@
 			  	bullet.update();
 				if(!bullet.active) {
 					bullets.remove(bullet);
+				}
+			});
+			enemies.forEach(function(enemy) {
+				enemy.update();
+				if(!enemy.active) {
+					enemies.remove(enemy);
 				}
 			});
 		}
@@ -145,10 +151,22 @@
 		e.color = "#F00";
 		e.width = 12;
 		e.height = 12;
+		e.x = e.x || Math.random()* (CANVAS_WIDTH - e.width);
+		e.y = e.y || 0;
+		e.speed = 2;
 
 		e.draw = function() {
 		  	canvas.fillStyle = this.color;
 			canvas.fillRect(this.x, this.y, this.width, this.height);
+		}
+
+		e.update = function() {
+			this.y += this.speed;
+			this.inBounds();
+		}
+
+		e.inBounds = function() {
+			this.active = (this.y < CANVAS_HEIGHT);
 		}
 
 		return e;

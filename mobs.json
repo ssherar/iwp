@@ -1,7 +1,8 @@
 {
-	"Enemy1" : {
-		"speed" : 5,
-		"height" : 10,
-		"width" : 10
+	"Enemy1: : {
+		"color" : "#369",
+		"speed" : 1,
+		"height" : 4,
+		"width" : 4
 	}
 }

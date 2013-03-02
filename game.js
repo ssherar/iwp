@@ -1,5 +1,5 @@
 (function($) {
-	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 60, timeOut, enemies = [], game = null, bullet, bullets = [];
+	var canvasElement, canvas, CANVAS_HEIGHT, CANVAS_WIDTH, FPS = 60, timeOut, enemies = [], game = null, bullet, bullets = [], enemy_types = [];
 	gameMechanics = function(canvasArea) {
 		var self = this;
 		canvasElement = canvasArea;
@@ -45,7 +45,8 @@
 				}
 			});
 			if(Math.random() < 0.05) {
-				enemies.push(new enemy());
+				tmp_enemy = $.extend(true, {}, enemy_types[0]);
+				enemies.push(new enemy(tmp_enemy));
 			}
 
 		}
@@ -182,12 +183,12 @@
 	enemy = function(e) {
 	  	e = e || {};
 	  	e.active = true;
-		e.color = "#F00";
-		e.width = 12;
-		e.height = 12;
+		e.color = e.color || "#F00";
+		e.width = e.width || 12;
+		e.height = e.height || 12;
 		e.x = e.x || Math.random()* (CANVAS_WIDTH - e.width);
 		e.y = e.y || 0;
-		e.speed = 2;
+		e.speed = e.speed || 2;
 
 		e.draw = function() {
 		  	canvas.fillStyle = this.color;
@@ -208,7 +209,8 @@
 
 	$.fn.run = function() {
 		$.getJSON('mobs.json', function(data) {
-			console.log(data);
+			console.log(data.Enemy1);
+			enemy_types.push(data.Enemy1);
 		});
 
 		game = new gameMechanics($(this));

@@ -207,6 +207,10 @@
 	}
 
 	$.fn.run = function() {
+		$.getJSON('mobs.json', function(data) {
+			console.log(data);
+		});
+
 		game = new gameMechanics($(this));
 		game.start();
 
@@ -220,9 +224,6 @@
 			} else {
 			       game.start();
 			}	       
-		});
-		$.getJSON('mobs.json', function(data) {
-			console.log(data);
 		});
 	}
 })(jQuery);

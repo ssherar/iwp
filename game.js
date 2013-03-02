@@ -221,6 +221,8 @@
 			       game.start();
 			}	       
 		});
-
+		$.getJSON('mobs.json', function(data) {
+			console.log(data);
+		});
 	}
 })(jQuery);

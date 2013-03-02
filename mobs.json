@@ -1,0 +1,7 @@
+{
+	"Enemy1" : {
+		"speed" : 5,
+		"height" : 10,
+		"width" : 10
+	}
+}

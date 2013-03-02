@@ -29,6 +29,10 @@
 		function update() {
 			canvas.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
 			checkCollisions();
+			if(!player.active) {
+				self.stop();
+				alert("Game Over");
+			}
 			for(i = 0; i < pressed_keys.length; i++) {
 				valid_keys[pressed_keys[i]].call();
 			}
@@ -46,10 +50,10 @@
 			});
 			if(Math.random() < 0.05) {
 				var i = Math.round(Math.random() * enemy_types.length);
-				console.log(i);
 				tmp_enemy = $.extend(true, {}, enemy_types[i]);
 				enemies.push(new enemy(tmp_enemy));
 			}
+			$("#score").text(player.score);
 
 		}
 
@@ -103,6 +107,7 @@
 			bullets.forEach(function(bullet) {
 				if(collided(enemy, bullet)) {
 					bullets.remove(bullet);
+					player.score += enemy.score;
 					hit = true
 					return;
 				}
@@ -110,6 +115,7 @@
 
 			if(collided(enemy, player)) {
 				//TODO loose a life
+				player.hit();
 				hit = true;
 			}
 
@@ -125,13 +131,15 @@
 			&& ((enemy.y + enemy.height) > object.y);
 	}
 
-	player = {
-		
+	player = {	
 		color: "#00A",
 		 x: 270,
 		 y: 270,
 		 width:32,
 		 height:32,
+		 score: 0,
+		 lives: 3,
+		 active: true,
 		 draw: function() {
 			 canvas.fillStyle = this.color;
 			 canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -155,6 +163,12 @@
 				bullets.push(tmpBullet);
 			 }
 
+		 }, hit: function() {
+			this.lives--;
+			$("#lives li:last").remove();
+			if(this.lives < 1) {
+				this.active = false;
+			}
 		 },
 		 midpoint: function() {
 			return {x: player.x + player.width/2, y: player.y};
@@ -191,6 +205,7 @@
 		e.x = e.x || Math.random()* (CANVAS_WIDTH - e.width);
 		e.y = e.y || 0;
 		e.speed = e.speed || 2;
+		e.score = e.score || 1;
 
 		e.draw = function() {
 		  	canvas.fillStyle = this.color;

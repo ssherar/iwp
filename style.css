@@ -6,3 +6,13 @@ body {
 #game {
 	border:1px solid #000;
 }
+
+#lives {
+	list-style-type:none;
+	display:inline;
+}
+
+#lives li {
+	display:inline;
+}
+

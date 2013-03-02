@@ -1,8 +1,14 @@
 {
-	"Enemy1: : {
-		"color" : "#369",
-		"speed" : 1,
-		"height" : 4,
-		"width" : 4
-	}
+	"enemy":  [
+		{
+			"color" : "#369",
+			"speed" : 1,
+			"height" : 4,
+			"width" : 4
+		},
+		{
+			"color" : "#AF0",
+			"speed" : 3.5
+		}
+	]
 }

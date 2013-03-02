@@ -45,7 +45,9 @@
 				}
 			});
 			if(Math.random() < 0.05) {
-				tmp_enemy = $.extend(true, {}, enemy_types[0]);
+				var i = Math.round(Math.random() * enemy_types.length);
+				console.log(i);
+				tmp_enemy = $.extend(true, {}, enemy_types[i]);
 				enemies.push(new enemy(tmp_enemy));
 			}
 
@@ -209,8 +211,7 @@
 
 	$.fn.run = function() {
 		$.getJSON('mobs.json', function(data) {
-			console.log(data.Enemy1);
-			enemy_types.push(data.Enemy1);
+			enemy_types.push(data.enemy[0]);
 		});
 
 		game = new gameMechanics($(this));
